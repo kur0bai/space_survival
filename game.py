@@ -1,1 +1,9 @@
 import random
+import tkinter
+
+WIDTH = 400
+HEIGHT = 600
+PLAYER_SPEED = 20
+BULLET_SPEED = -10
+ENEMY_SPEED = 2
+ENEMY_BULLET_SPEED = -10
