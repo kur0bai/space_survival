@@ -44,14 +44,14 @@ class Game:
     def shoot(self, event):
         x1, y1, x2, y2 = self.canvas.coords(self.player)
         bullet = self.canvas.create_rectangle(
-            (x1 + x2)//2 - 2, y1 - 10, (x1 + x2)//2 + 2, y1, fill="red")
+            (x1 + x2)//2 - 2, y1 - 10, (x1 + x2)//2 + 2, y1, fill="yellow")
         self.bullets.append(bullet)
 
     def spawn_enemies(self):
         for i in range(self.enemy_count + self.level):
             x = random.randint(0, WIDTH - 40)
-            enemy = self.canvas.create_rectangle(
-                x, 10, x + 30, 30, fill="green")
+            enemy = self.canvas.create_oval(
+                x, 10, x + 30, 40, fill="brown")
             self.enemies.append(enemy)
 
     def update(self):
