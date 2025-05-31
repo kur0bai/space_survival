@@ -14,7 +14,7 @@ class Game:
         self.canvas.pack()
 
         self.player = self.canvas.create_rectangle(
-            WIDTH//2 - 15, HEIGHT - 30, WIDTH//2 + 15, 
+            WIDTH//2 - 15, HEIGHT - 30, WIDTH//2 + 15,
             HEIGHT - 10, fill="white")
 
         # main elements
@@ -23,17 +23,18 @@ class Game:
         self.level = 1
         self.enemy_count = 5
         self.enemy_speed = 1
+        self.points = 0
 
         self.root.bind("<Left>", self.move_left)
         self.root.bind("<Right>", self.move_right)
         self.root.bind("<space>", self.shoot)
 
         self.start_level()
-        
+
     def start_level(self):
         self.spawn_enemies()
         self.update()
-        
+
     def move_left(self, event):
         self.canvas.move(self.player, -PLAYER_SPEED, 0)
 
@@ -74,23 +75,25 @@ class Game:
                     self.canvas.delete(bullet)
                     self.enemies.remove(enemy)
                     self.bullets.remove(bullet)
+                    self.points += 2
                     break
-        # enemies defeated         
+        # enemies defeated
         if not self.enemies:
-            self.canvas.create_text(
-                200, 250, 
-                text=f"Completed level {self.level}!", 
-                font=("Arial", 24), 
+            finished_text = self.canvas.create_text(
+                200, 250,
+                text=f"Completed level {self.level}!",
+                font=("Arial", 20),
                 fill="green"
             )
-            self.finished_level()    
+            self.canvas.after(2000, lambda: self.canvas.delete(finished_text))
+            self.finished_level()
 
         self.root.after(50, self.update)
-        
+
     def finished_level(self):
         self.level += 1
         root.after(1000, self.start_level())
-            
+
     def intersect(self, a, b):
         ax1, ay1, ax2, ay2 = a
         bx1, by1, bx2, by2 = b
@@ -98,9 +101,16 @@ class Game:
 
     # show text if game is over
     def game_over(self):
-        self.canvas.create_text(
+        game_over_text = self.canvas.create_text(
             WIDTH//2, HEIGHT//2, fill="red", font=("Arial", 24),
             text="GAME OVER")
+        self.canvas.after(2000, lambda: self.canvas.delete(game_over_text))
+        self.canvas.create_text(
+            200, 250,
+            text=f"You score is {self.points}!",
+            font=("Arial", 20),
+            fill="green"
+        )
 
 
 # starting the game :D
