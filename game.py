@@ -5,9 +5,6 @@ WIDTH = 400
 HEIGHT = 600
 PLAYER_SPEED = 20
 BULLET_SPEED = -10
-ENEMY_SPEED = 2
-ENEMY_BULLE_SPEED = -10
-ENEMY_COUNT = 5
 
 
 class Game:
@@ -17,10 +14,15 @@ class Game:
         self.canvas.pack()
 
         self.player = self.canvas.create_rectangle(
-            WIDTH//2 - 15, HEIGHT - 30, WIDTH//2 + 15, HEIGHT - 10, 
-            fill="white")
+            WIDTH//2 - 15, HEIGHT - 30, WIDTH//2 + 15, 
+            HEIGHT - 10, fill="white")
+
+        # main elements
         self.bullets = []
         self.enemies = []
+        self.level = 1
+        self.enemy_count = 5
+        self.enemy_speed = 2
 
         self.root.bind("<Left>", self.move_left)
         self.root.bind("<Right>", self.move_right)
@@ -42,8 +44,8 @@ class Game:
         self.bullets.append(bullet)
 
     def spawn_enemies(self):
-        for i in range(5):
-            x = random.randint(0, WIDTH - 20)
+        for i in range(self.enemy_count):
+            x = random.randint(0, WIDTH - 40)
             enemy = self.canvas.create_rectangle(
                 x, 10, x + 30, 30, fill="green")
             self.enemies.append(enemy)
@@ -57,7 +59,7 @@ class Game:
                 self.bullets.remove(bullet)
 
         for enemy in self.enemies[:]:
-            self.canvas.move(enemy, 0, ENEMY_SPEED)
+            self.canvas.move(enemy, 0, self.enemy_speed)
             ex1, ey1, ex2, ey2 = self.canvas.coords(enemy)
             if ey2 > HEIGHT:
                 self.game_over()
@@ -70,6 +72,11 @@ class Game:
                     self.enemies.remove(enemy)
                     self.bullets.remove(bullet)
                     break
+        # enemies defeated         
+        if not self.enemies:
+            self.canvas.create_text(200, 250, text="You won!", 
+                                    font=("Arial", 24), 
+                                    fill="green")    
 
         self.root.after(50, self.update)
 
@@ -78,14 +85,14 @@ class Game:
         bx1, by1, bx2, by2 = b
         return not (ax2 < bx1 or ax1 > bx2 or ay2 < by1 or ay1 > by2)
 
-    #Show text if game is over
+    # show text if game is over
     def game_over(self):
         self.canvas.create_text(
             WIDTH//2, HEIGHT//2, fill="red", font=("Arial", 24),
             text="GAME OVER")
 
 
-#Run the game
+# starting the game :D
 if __name__ == '__main__':
     root = tk.Tk()
     root.title("Space survival")
