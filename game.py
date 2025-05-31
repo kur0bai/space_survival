@@ -43,3 +43,10 @@ class Game:
             enemy = self.canvas.create_rectangle(
                 x, 10, x + 30, 30, fill="green")
             self.enemies.append(enemy)
+
+
+if __name__ == '__main__':
+    root = tk.Tk()
+    root.title("Space survival")
+    game = Game(root)
+    root.mainloop()
