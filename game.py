@@ -4,7 +4,7 @@ import random
 WIDTH = 400
 HEIGHT = 600
 PLAYER_SPEED = 20
-BULLET_SPEED = -10
+BULLET_SPEED = -6
 
 
 class Game:
@@ -22,15 +22,18 @@ class Game:
         self.enemies = []
         self.level = 1
         self.enemy_count = 5
-        self.enemy_speed = 2
+        self.enemy_speed = 1
 
         self.root.bind("<Left>", self.move_left)
         self.root.bind("<Right>", self.move_right)
         self.root.bind("<space>", self.shoot)
 
+        self.start_level()
+        
+    def start_level(self):
         self.spawn_enemies()
         self.update()
-
+        
     def move_left(self, event):
         self.canvas.move(self.player, -PLAYER_SPEED, 0)
 
@@ -44,7 +47,7 @@ class Game:
         self.bullets.append(bullet)
 
     def spawn_enemies(self):
-        for i in range(self.enemy_count):
+        for i in range(self.enemy_count + self.level):
             x = random.randint(0, WIDTH - 40)
             enemy = self.canvas.create_rectangle(
                 x, 10, x + 30, 30, fill="green")
@@ -74,12 +77,20 @@ class Game:
                     break
         # enemies defeated         
         if not self.enemies:
-            self.canvas.create_text(200, 250, text="You won!", 
-                                    font=("Arial", 24), 
-                                    fill="green")    
+            self.canvas.create_text(
+                200, 250, 
+                text=f"Completed level {self.level}!", 
+                font=("Arial", 24), 
+                fill="green"
+            )
+            self.finished_level()    
 
         self.root.after(50, self.update)
-
+        
+    def finished_level(self):
+        self.level += 1
+        root.after(1000, self.start_level())
+            
     def intersect(self, a, b):
         ax1, ay1, ax2, ay2 = a
         bx1, by1, bx2, by2 = b
