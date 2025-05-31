@@ -10,3 +10,4 @@ I added difficulty for level to make the next worse :D
 - Make sure you have the python 3.10+ installed in your machine:
 then run `python3 game.py`
 - Probably you'll need to set a virtual environment first
+- Enjoy, remember you shoot withe the SPACE key 😄
