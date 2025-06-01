@@ -30,7 +30,8 @@ class Game:
         self.root.bind("<space>", self.shoot)
 
         self.score_text = self.canvas.create_text(
-            10, 10, anchor='nw', text=f"Score: {self.score}", fill='white', font=('Arial', 16))
+            10, 10, anchor='nw', text=f"Score: {self.score}", fill='white',
+            font=('Arial', 16))
 
         self.start_level()
 
