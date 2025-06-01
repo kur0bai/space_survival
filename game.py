@@ -23,11 +23,14 @@ class Game:
         self.level = 1
         self.enemy_count = 5
         self.enemy_speed = 1
-        self.points = 0
+        self.score = 0
 
         self.root.bind("<Left>", self.move_left)
         self.root.bind("<Right>", self.move_right)
         self.root.bind("<space>", self.shoot)
+
+        self.score_text = self.canvas.create_text(
+            10, 10, anchor='nw', text=f"Score: {self.score}", fill='white', font=('Arial', 16))
 
         self.start_level()
 
@@ -75,7 +78,9 @@ class Game:
                     self.canvas.delete(bullet)
                     self.enemies.remove(enemy)
                     self.bullets.remove(bullet)
-                    self.points += 2
+                    self.score += 5
+                    self.canvas.itemconfig(
+                        self.score_text, text=f"Score: {self.score}")
                     break
         # enemies defeated
         if not self.enemies:
@@ -107,7 +112,7 @@ class Game:
         self.canvas.after(2000, lambda: self.canvas.delete(game_over_text))
         self.canvas.create_text(
             200, 250,
-            text=f"You score is {self.points}!",
+            text=f"You score is {self.score}!",
             font=("Arial", 20),
             fill="green"
         )
